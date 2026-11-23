@@ -34,7 +34,7 @@ jobs:
       - name: checkout
         uses: actions/checkout@v7
       - name: ansible-lint
-        uses: ansible/ansible-lint@v26.6.0
+        uses: ansible/ansible-lint@v26.11.0
 
   molecule:
     needs:
@@ -70,7 +70,7 @@ jobs:
       - name: checkout
         uses: actions/checkout@v7
         with:
-          path: ansible-role-digitalocean_agent
+          path: ansible-role-digitalocean-agent
 
       - name: Set up Python
         uses: actions/setup-python@v7
@@ -94,15 +94,15 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip3 install ansible molecule molecule-plugins[docker] docker
+          pip3 install "ansible==15.0.0" "molecule==26.11.0" "molecule-plugins[docker]==26.11.0" "docker==7.2.0"
 
       - name: Test with molecule
         run: |
-          cd ansible-role-digitalocean_agent
+          cd ansible-role-digitalocean-agent
           molecule test
         env:
           PY_COLORS: 1
           ANSIBLE_FORCE_COLOR: 1
-          ANSIBLE_ROLES_PATH: ~/.ansible/roles:${GITHUB_WORKSPACE}/ansible-role-digitalocean_agent
+          ANSIBLE_ROLES_PATH: ~/.ansible/roles:${GITHUB_WORKSPACE}/ansible-role-digitalocean-agent
           image: ${{ matrix.distro.image }}
           tag: ${{ matrix.distro.tag }}
